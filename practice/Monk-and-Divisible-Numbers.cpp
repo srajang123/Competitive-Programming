@@ -53,18 +53,13 @@ ll power(ll a,ll b,ll m)
 
 //Prime Factors
 
-vector<ll> factors(ll n)
+ll factors(ll n,ll k)
 {
-	vector<ll>r;
-	ll i,j;
-	for(i=1;i*i<=n;i++)
+	ll r=0;
+	while(n%k==0)
 	{
-		if(n%i==0)
-		{
-			r.push_back(i);
-			if(n/i!=i)
-				r.push_back(n/i);
-		}
+		n/=k;
+		r++;
 	}
 	return r;
 }
@@ -138,76 +133,18 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,m,l;
-	cin>>n;
-	vector<ll>a(n),b(n,-1);
-	unordered_set<ll>c;
-	for(i=0;i<n;i++)
+	ll a,b,c,i,j,k;
+	cin>>a>>b>>c;
+	k=0;
+	while (a%b==0)
 	{
-		cin>>a[i];
-		c.insert(a[i]);
+		a/=b;
+		k++;
 	}
-	b[0]=0;
-	if(c.size()==1)
-	{
-		for(i=0;i<n;i++)
-			b[i]=0;
-	}
-	else if(n%2==0)
-	{
-		for(i=1;i<n;i++)
-		{
-			b[i]=(b[i-1]+1)%2;
-		}
-	}
-	else
-	{
-		j=0;
-		for(i=1;i<n;i++)
-		{
-			if(a[i]==a[i-1])
-				j++;
-		}
-		if(j==0)
-		{
-			for(i=1;i<n;i++)
-			{
-				b[i]=(b[i-1]+1)%2;
-			}
-			if(a[0]!=a.back())
-				b[n-1]=2;
-		}
-		else
-		{
-			for(i=1;i<n && j;i++)
-			{
-				if(a[i]==a[i-1])
-				{
-					b[i]=b[i-1];
-					j=0;
-				}
-				else
-				{
-					b[i]=(b[i-1]+1)%2;
-				}
-			}
-			for(i;i<n;i++)
-			{
-				b[i]=(b[i-1]+1)%2;
-			}
-		}
-
-	}
-	j=0;
-	for(i=0;i<n;i++)
-	{
-		if(b[i]>j)
-			j=b[i];
-	}
-	cout<<(j+1)<<"\n";
-	for(i=0;i<n;i++)
-		cout<<b[i]+1<<" ";
-	cout<<"\n";
+	c-=k;
+	if(c<0)c=0;
+	k=power(b,c,M);
+	cout<<k<<"\n";
 }
 
 int main()

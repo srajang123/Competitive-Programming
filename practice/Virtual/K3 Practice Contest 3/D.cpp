@@ -138,76 +138,133 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,m,l;
-	cin>>n;
-	vector<ll>a(n),b(n,-1);
-	unordered_set<ll>c;
-	for(i=0;i<n;i++)
+	ll i,j,k,n,l;
+	string s;
+	cin>>n>>s;
+	ll p,q,r,t,u,v;
+	p=q=r=0;
+	for(i=0;i<s.size();i++)
 	{
-		cin>>a[i];
-		c.insert(a[i]);
-	}
-	b[0]=0;
-	if(c.size()==1)
-	{
-		for(i=0;i<n;i++)
-			b[i]=0;
-	}
-	else if(n%2==0)
-	{
-		for(i=1;i<n;i++)
-		{
-			b[i]=(b[i-1]+1)%2;
-		}
-	}
-	else
-	{
-		j=0;
-		for(i=1;i<n;i++)
-		{
-			if(a[i]==a[i-1])
-				j++;
-		}
-		if(j==0)
-		{
-			for(i=1;i<n;i++)
-			{
-				b[i]=(b[i-1]+1)%2;
-			}
-			if(a[0]!=a.back())
-				b[n-1]=2;
-		}
+		if(s[i]=='0')
+			p++;
+		else if(s[i]=='1')
+			q++;
 		else
+			r++;
+	}
+	t=u=v=n/3;
+	t=p-t;
+	u=q-u;
+	v=r-v;
+	if(u>0 && v>0)
+	{
+		for(i=0;i<s.size() && u>0 && v>0;i++)
 		{
-			for(i=1;i<n && j;i++)
+			if(s[i]=='1')
 			{
-				if(a[i]==a[i-1])
-				{
-					b[i]=b[i-1];
-					j=0;
-				}
-				else
-				{
-					b[i]=(b[i-1]+1)%2;
-				}
+				s[i]='0';
+				u--;
 			}
-			for(i;i<n;i++)
+			else if(s[i]=='2')
 			{
-				b[i]=(b[i-1]+1)%2;
+				s[i]='0';
+				v--;
 			}
 		}
-
 	}
-	j=0;
-	for(i=0;i<n;i++)
+	else if(t>0 && u>0)
 	{
-		if(b[i]>j)
-			j=b[i];
+		for(i=s.size()-1;i>=0 && u>0 && v>0;i--)
+		{
+			if(s[i]=='1')
+			{
+				s[i]='2';
+				u--;
+			}
+			else if(s[i]=='0')
+			{
+				s[i]='2';
+				t--;
+			}
+		}
 	}
-	cout<<(j+1)<<"\n";
-	for(i=0;i<n;i++)
-		cout<<b[i]+1<<" ";
-	cout<<"\n";
+	else if(t>0 && v>0)
+	{
+		for(i=0;i<s.size() && v>0;i++)
+		{
+			if(s[i]=='2')
+			{
+				s[i]=='1';
+				v--;
+			}
+		}
+		for(i=s.size()-1;i>=0 && t>0;i--)
+		{
+			if(s[i]=='0')
+			{
+				s[i]='1';
+				t--;
+			}
+		}
+	}
+	else if(t>0)
+	{
+		for(i=s.size()-1;i>=0 && v<0;i--)
+		{
+			if(s[i]=='0')
+			{
+				s[i]='2';
+				v++;
+			}
+		}
+		for(i=s.size()-1;i>=0 && u<0;i--)
+		{
+			if(s[i]=='0')
+			{
+				s[i]='1';
+				u++;
+			}
+		}
+	}
+	else if(v>0)
+	{
+		for(i=0;i<s.size() && t<0;i++)
+		{
+			if(s[i]=='2')
+			{
+				s[i]='0';
+				t++;
+			}
+		}
+		for(i=0;i<s.size() && u<0;i++)
+		{
+			if(s[i]=='2')
+			{
+				s[i]='1';
+				u++;
+			}
+		}
+	}
+	else if(u>0)
+	{
+		for(i=0;i<s.size() && t<0;i++)
+		{
+			if(s[i]=='1')
+			{
+				s[i]='0';
+				t++;
+			}
+		}
+		for(i=s.size()-1;i>=0 && v<0;i--)
+		{
+			if(s[i]=='1')
+			{
+				s[i]='2';
+				v++;
+			}
+		}
+	}
+	cout<<s;
 }
 
 int main()
@@ -216,7 +273,6 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    cin>>t;
     while(t--)
     {
         solve();
