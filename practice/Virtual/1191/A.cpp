@@ -138,7 +138,25 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-
+	ll i,j,n;
+	char x;
+	cin>>n;
+	switch(n%4)
+	{
+		case 0:j=1;
+		x='A';
+			break;
+		case 1:j=0;
+			x='A';
+			break;
+		case 2:j=1;
+			x='B';
+			break;
+		case 3:j=2;
+			x='A';
+			break;
+	}
+	cout<<j<<" "<<x;
 }
 
 int main()
@@ -147,7 +165,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    cin>>t;
+    //cin>>t;
     while(t--)
     {
         solve();

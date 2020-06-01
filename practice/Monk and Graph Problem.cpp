@@ -3,9 +3,9 @@ using namespace std;
 #define ll long long
 #define N 1000005
 #define M 1000000007
-
+ 
 //Prime Numbers
-
+ 
 vector<bool>prime(N+1,true);
 void sieve()
 {
@@ -22,9 +22,9 @@ void sieve()
 		}
 	}
 }
-
+ 
 //Exponentiation
-
+ 
 ll power(ll a,ll b)
 {
 	ll r=1;
@@ -50,9 +50,9 @@ ll power(ll a,ll b,ll m)
 	}
 	return r;
 }
-
+ 
 //Prime Factors
-
+ 
 vector<ll> factors(ll n)
 {
 	vector<ll>r;
@@ -68,7 +68,7 @@ vector<ll> factors(ll n)
 	}
 	return r;
 }
-
+ 
 //GCD
 ll gcd(ll a,ll b)
 {
@@ -109,20 +109,22 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	return order;
 }
 vector<bool>dvisited(N,false);
-vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
+vector<vector<ll>>G(N);
+ll dfs(ll s)
 {
-	vector<ll>order;
+	//vector<ll>order;
 	stack<ll>q;
 	q.push(s);
+	ll cc=0;
 	while(!q.empty())
 	{
 		ll v=q.top();
 		q.pop();
 		if(!dvisited[v])
 		{
-			order.push_back(v);
+			//order.push_back(v);
+			cc+=G[v].size();
 			dvisited[v]=true;
-		}
 		for(ll i=0;i<G[v].size();i++)
 		{
 			if(!dvisited[G[v][i]])
@@ -130,96 +132,42 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 				q.push(G[v][i]);
 			}
 		}
+		}
 	}
-	return order;
+	return cc/2;
 }
-
+ 
 //Main Solution
-
+ 
 void solve()
 {
-	string s;
-	unordered_map<string,ll>a;
-	for(ll ii=1;ii<=3;ii++)
+	ll i,j,k,n,m;
+	cin>>n>>m;
+	//vector<vector<ll>>G(n+1);
+	for(i=0;i<m;i++)
 	{
-		cin>>s;
-		a[s]++;
+		cin>>j>>k;
+		G[j].push_back(k);
+		G[k].push_back(j);
 	}
-	ll j=0,k=0,c=0;
-	bool f=true;
-	for(auto x:a)
+	m=0;
+	for(i=1;i<=n;i++)
 	{
-		if(x.second==3)
+		if(!dvisited[i])
 		{
-			f=false;
-		}
-	}
-	if(f)
-	{
-		c=INT64_MAX;
-		for(auto x:a)
-		{
-			j=x.second;
-			c=j>c?c:j;
+			k=dfs(i);
+			m=m>k?m:k;
 		}
 	}
-	if(f)
-	{
-		vector<vector<ll>>b(26);
-		k=0;
-		for(auto x:a)
-		{
-			string t=x.first;
-			b[t[1]-'a'].push_back(t[0]-'0');
-		}
-		ll i;
-		for(i=0;i<26;i++)
-			sort(b[i].begin(),b[i].end());
-		for(i=0;i<26;i++)
-		{
-			if(b[i].size()==3)
-			{
-				if(b[i][0]+1==b[i][1] && b[i][1]+1==b[i][2])
-					f=false;
-			}
-		}
-		if(f)
-		{
-			k=3;
-			for(i=0;i<26;i++)
-			{
-				if(b[i].size()==1)
-				{
-					k=k>1?1:k;
-				}
-				else if(b[i].size()==2)
-				{
-					if(b[i][0]+1==b[i][1])
-						k=k>1?1:k;
-					else
-						k=k>2?2:k;
-				}
-				else if(b[i].size()==3)
-				{
-					if(b[i][0]+1==b[i][1]||b[i][1]+1==b[i][2])
-						k=k>1?1:k;
-					else
-						k=k>2?2:k;
-				}
-			}
-		}
-	}
-	c=c>k?k:c;
-	cout<<c;
+	cout<<m;
 }
-
+ 
 int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    //cin>>t;
     while(t--)
     {
         solve();
