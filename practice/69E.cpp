@@ -138,42 +138,37 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,m,l;
-	cin>>n;
-	vector<ll>p(n),a(n),b(n),q(n,0),d(n,0);
-	vector<vector<pair<ll,ll>>>c(4);
-	for(i=0;i<n;i++)
-		cin>>p[i];
-	for(i=0;i<n;i++)
+	ll n,k,i,j,l,m;
+	cin>>n>>k;
+	vector<ll>a(n);
+	for(i=0;i<n;i++)cin>>a[i];
+	set<ll>b;
+	unordered_map<ll,ll>c;
+	for(i=0;i<k;i++)
 	{
-		cin>>a[i];
-		c[a[i]].push_back({p[i],i});
+		c[a[i]]++;
+		if(c[a[i]]==1)b.insert(a[i]);
+		else b.erase(a[i]);
 	}
-	for(i=0;i<n;i++)
+	j=0;
+	if(b.size()==0)
+		cout<<"Nothing\n";
+	else
+		cout<<*b.rbegin()<<"\n";
+	for(i=k;i<n;i++)
 	{
-		cin>>b[i];
-		c[b[i]].push_back({p[i],i});
+		c[a[j]]--;
+		c[a[i]]++;
+		if(c[a[j]]==1)b.insert(a[j]);
+		else b.erase(a[j]);
+		if(c[a[i]]==1)b.insert(a[i]);
+		else b.erase(a[i]);
+		if(b.size()==0)
+			cout<<"Nothing\n";
+		else
+			cout<<*b.rbegin()<<"\n";
+		j++;
 	}
-	for(i=1;i<=3;i++)
-		sort(c[i].begin(),c[i].end());
-	cin>>m;
-	vector<ll>idx(4,0);
-	while(m--)
-	{
-		cin>>k;
-		l=-1;
-		while(c[k].size()>idx[k] && l==-1)
-		{
-			if(d[c[k][idx[k]].second]==0)
-			{
-				l=c[k][idx[k]].first;
-				d[c[k][idx[k]].second]=1;
-			}
-			idx[k]++;
-		}
-		cout<<l<<" ";
-	}
-	cout<<"\n";
 }
 
 int main()
@@ -182,6 +177,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
+    //cin>>t;
     while(t--)
     {
         solve();

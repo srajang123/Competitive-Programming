@@ -87,26 +87,36 @@ ll lcm(ll a,ll b)
 }
 //Graphs
 vector<bool>bvisited(N,false);
-vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
+vector<ll>cnt(N,0);
+vector<vector<ll>>G(N);
+ll f,s,g,u,d;
+void bfs()
 {
-	vector<ll>order;
 	queue<ll>q;
 	bvisited[s]=true;
+	cnt[s]=0;
 	q.push(s);
 	while(!q.empty())
 	{
 		s=q.front();
-		order.push_back(s);
-		for(auto x:G[s])
+		q.pop();
+		bvisited[s]=true;
+		ll i,j,k;
+		i=s+u;
+		j=s-d;
+		if(i<=f && i>=1 && !bvisited[i])
 		{
-			if(!bvisited[x])
-			{
-				bvisited[x]=true;
-				q.push(x);
-			}
+			bvisited[i]=1;
+			q.push(i);
+			cnt[i]=cnt[s]+1;
+		}
+		if(j>=1 && j<=f && !bvisited[j])
+		{
+			bvisited[j]=true;
+			q.push(j);
+			cnt[j]=cnt[s]+1;
 		}
 	}
-	return order;
 }
 vector<bool>dvisited(N,false);
 vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
@@ -138,42 +148,15 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,m,l;
-	cin>>n;
-	vector<ll>p(n),a(n),b(n),q(n,0),d(n,0);
-	vector<vector<pair<ll,ll>>>c(4);
-	for(i=0;i<n;i++)
-		cin>>p[i];
-	for(i=0;i<n;i++)
+	cin>>f>>s>>g>>u>>d;
+	bfs();
+	if(bvisited[g])
+		cout<<cnt[g];
+	else
 	{
-		cin>>a[i];
-		c[a[i]].push_back({p[i],i});
+		cout<<"use the stairs";
 	}
-	for(i=0;i<n;i++)
-	{
-		cin>>b[i];
-		c[b[i]].push_back({p[i],i});
-	}
-	for(i=1;i<=3;i++)
-		sort(c[i].begin(),c[i].end());
-	cin>>m;
-	vector<ll>idx(4,0);
-	while(m--)
-	{
-		cin>>k;
-		l=-1;
-		while(c[k].size()>idx[k] && l==-1)
-		{
-			if(d[c[k][idx[k]].second]==0)
-			{
-				l=c[k][idx[k]].first;
-				d[c[k][idx[k]].second]=1;
-			}
-			idx[k]++;
-		}
-		cout<<l<<" ";
-	}
-	cout<<"\n";
+	
 }
 
 int main()
@@ -182,6 +165,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
+    //cin>>t;
     while(t--)
     {
         solve();

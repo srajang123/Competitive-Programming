@@ -138,42 +138,37 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,m,l;
-	cin>>n;
-	vector<ll>p(n),a(n),b(n),q(n,0),d(n,0);
-	vector<vector<pair<ll,ll>>>c(4);
-	for(i=0;i<n;i++)
-		cin>>p[i];
-	for(i=0;i<n;i++)
+	ll n,x,a,b,k=0;
+	cin>>n>>x>>a>>b;
+	if(b<a)
 	{
-		cin>>a[i];
-		c[a[i]].push_back({p[i],i});
+		k=a;
+		a=b;
+		b=k;
 	}
-	for(i=0;i<n;i++)
+	k=0;
+	if(a-1<=x)
 	{
-		cin>>b[i];
-		c[b[i]].push_back({p[i],i});
+		x-=a-1;
+		a=1;
 	}
-	for(i=1;i<=3;i++)
-		sort(c[i].begin(),c[i].end());
-	cin>>m;
-	vector<ll>idx(4,0);
-	while(m--)
+	else
 	{
-		cin>>k;
-		l=-1;
-		while(c[k].size()>idx[k] && l==-1)
-		{
-			if(d[c[k][idx[k]].second]==0)
-			{
-				l=c[k][idx[k]].first;
-				d[c[k][idx[k]].second]=1;
-			}
-			idx[k]++;
-		}
-		cout<<l<<" ";
+		a-=x;
+		x=0;
 	}
-	cout<<"\n";
+	if(n-b<=x)
+	{
+		x-=n-b;
+		b=n;
+	}
+	else
+	{
+		b+=x;
+		x=0;
+	}
+	k=abs(b-a);
+	cout<<k<<"\n";
 }
 
 int main()
@@ -182,6 +177,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
+    cin>>t;
     while(t--)
     {
         solve();
