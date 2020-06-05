@@ -109,7 +109,9 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	return order;
 }
 vector<bool>dvisited(N,false);
-vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
+vector<vector<ll>>G(N);
+vector<ll>d(N,0);
+vector<ll> dfs(ll s)
 {
 	vector<ll>order;
 	stack<ll>q;
@@ -122,12 +124,13 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 		{
 			order.push_back(v);
 			dvisited[v]=true;
-		}
-		for(ll i=0;i<G[v].size();i++)
-		{
-			if(!dvisited[G[v][i]])
+			for(ll i=0;i<G[v].size();i++)
 			{
-				q.push(G[v][i]);
+				if(!dvisited[G[v][i]])
+				{
+					d[G[v][i]]=d[v]+1;
+					q.push(G[v][i]);
+				}
 			}
 		}
 	}
@@ -138,42 +141,35 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,m,l;
+	ll n,i,j,k,l;
 	cin>>n;
-	vector<ll>p(n),a(n),b(n),q(n,0),d(n,0);
-	vector<vector<pair<ll,ll>>>c(4);
-	for(i=0;i<n;i++)
-		cin>>p[i];
+	for(i=1;i<n;i++)
+	{
+		cin>>j>>k;
+		G[j].push_back(k);
+		G[k].push_back(j);
+	}
+	dfs(0);
+	l=0;
 	for(i=0;i<n;i++)
 	{
-		cin>>a[i];
-		c[a[i]].push_back({p[i],i});
+		if(d[i]>d[l])
+			l=i;
 	}
+	k=d[l];
+	fill(d.begin(),d.end(),0);
+	fill(dvisited.begin(),dvisited.end(),false);
+	dfs(l);
+	l=0;
 	for(i=0;i<n;i++)
 	{
-		cin>>b[i];
-		c[b[i]].push_back({p[i],i});
+		if(d[i]>k)
+			k=d[i];
 	}
-	for(i=1;i<=3;i++)
-		sort(c[i].begin(),c[i].end());
-	cin>>m;
-	vector<ll>idx(4,0);
-	while(m--)
-	{
-		cin>>k;
-		l=-1;
-		while(c[k].size()>idx[k] && l==-1)
-		{
-			if(d[c[k][idx[k]].second]==0)
-			{
-				l=c[k][idx[k]].first;
-				d[c[k][idx[k]].second]=1;
-			}
-			idx[k]++;
-		}
-		cout<<l<<" ";
-	}
-	cout<<"\n";
+	k=ceil((k*1.0)/2);
+	cout<<k<<"\n";
+	for(i=0;i<n;i++)
+		G[i].clear();
 }
 
 int main()
@@ -182,8 +178,11 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
+    cin>>t;
     while(t--)
     {
+	fill(d.begin(),d.end(),0);
+	fill(dvisited.begin(),dvisited.end(),false);
         solve();
     }
 }

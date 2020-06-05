@@ -15,7 +15,7 @@ void sieve()
 	{
 		if(prime[i])
 		{
-			for(j=i*i;j<=N;j++)
+			for(j=i*i;j<=N;j+=i)
 			{
 				prime[j]=false;
 			}
@@ -109,23 +109,26 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	return order;
 }
 vector<bool>dvisited(N,false);
-vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
+vector<vector<ll>>G(N);
+vector<ll> dfs(ll s)
 {
 	vector<ll>order;
 	stack<ll>q;
-	dvisited[s]=true;
 	q.push(s);
 	while(!q.empty())
 	{
 		ll v=q.top();
 		q.pop();
+		if(!dvisited[v])
+		{
+			order.push_back(v);
+			dvisited[v]=true;
+		}
 		for(ll i=0;i<G[v].size();i++)
 		{
 			if(!dvisited[G[v][i]])
 			{
 				q.push(G[v][i]);
-				dvisited[G[v][i]]=true;
-				order.push_back(G[v][i]);
 			}
 		}
 	}
@@ -136,53 +139,47 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,m;
-	cin>>m;
-	map<ll,vector<ll>>d;
-	set<ll>s;
-	map<ll,ll>t;
-	for(i=0;i<m;i++)
+	ll i,j,k,n,x,y;
+	cin>>n;
+	vector<vector<ll>>a(1001),b(1001);
+	for(i=1;i<=n;i++)
 	{
-		cin>>j>>k;
-		d[j-1].push_back(k-1);
-		s.insert(j-1);
-		s.insert(k-1);
+		cin>>x>>y;
+		a[x].push_back(i);
+		b[y].push_back(i);
 	}
-	vector<vector<ll>>a(s.size());
-	i=0;
-	for(auto x:s)
+	for(i=1;i<1001;i++)
 	{
-		t[x]=i;
-		i++;
-	}
-	for(auto x:d)
-	{
-		for(auto y:x.second)
+		for(j=1;j<a[i].size();j++)
 		{
-			a[t[x.first]].push_back(t[y]);
-		//	a[t[y]].push_back(t[x.first]);
+			G[a[i][j-1]].push_back(a[i][j]);
+			G[a[i][j]].push_back(a[i][j-1]);
 		}
 	}
-	//exit(0);
-	ll c=0;
-	for(auto x:a)
+	for(i=1;i<1001;i++)
 	{
-		for(auto y:x)
-			cout<<y<<" ";
-		cout<<"\n";
+		for(j=1;j<b[i].size();j++)
+		{
+			G[b[i][j-1]].push_back(b[i][j]);
+			G[b[i][j]].push_back(b[i][j-1]);
+		}
 	}
-	for(i=0;i<a.size();i++)
+	k=0;/*
+	for(i=1;i<=n;i++)
+	{
+		for(auto x:G[i])
+			cout<<x<<":";
+		cout<<"\n";
+	}*/
+	for(i=1;i<=n;i++)
 	{
 		if(!dvisited[i])
 		{
-			for(auto x:dfs(a.size(),a,i))
-				cout<<x<<" ";
-			cout<<"\n";
-			c++;
+			k++;
+			dfs(i);
 		}
 	}
-	//exit(0);
-	cout<<c<<"\n";
+	cout<<k-1;
 }
 
 int main()

@@ -135,45 +135,63 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 }
 
 //Main Solution
-
-void solve()
+vector<vector<ll>>G(1000,vector<ll>(1000));
+vector<vector<bool>>visit(1000,vector<bool>(1000,false));
+unordered_map<ll,ll>size;
+ll cnt=0;
+void recur(ll i,ll j,ll n,ll m)
 {
-	ll i,j,k,n,m,l;
-	cin>>n;
-	vector<ll>p(n),a(n),b(n),q(n,0),d(n,0);
-	vector<vector<pair<ll,ll>>>c(4);
-	for(i=0;i<n;i++)
-		cin>>p[i];
+	if(i>=n||i<0||j>=m||j<0)return;
+	if(G[i][j]==0)return;
+	if(visit[i][j])return;
+	cnt++;
+	visit[i][j]=true;
+	recur(i+1,j,n,m);
+	recur(i,j+1,n,m);
+	recur(i-1,j,n,m);
+	recur(i,j-1,n,m);
+}
+ll solve()
+{
+	ll i,j,k,n,m;
+	cin>>n>>m;
+	if(n==m && n==0)return -1;
 	for(i=0;i<n;i++)
 	{
-		cin>>a[i];
-		c[a[i]].push_back({p[i],i});
-	}
-	for(i=0;i<n;i++)
-	{
-		cin>>b[i];
-		c[b[i]].push_back({p[i],i});
-	}
-	for(i=1;i<=3;i++)
-		sort(c[i].begin(),c[i].end());
-	cin>>m;
-	vector<ll>idx(4,0);
-	while(m--)
-	{
-		cin>>k;
-		l=-1;
-		while(c[k].size()>idx[k] && l==-1)
+		for(j=0;j<m;j++)
 		{
-			if(d[c[k][idx[k]].second]==0)
-			{
-				l=c[k][idx[k]].first;
-				d[c[k][idx[k]].second]=1;
-			}
-			idx[k]++;
+			visit[i][j]=false;
+			cin>>G[i][j];
 		}
-		cout<<l<<" ";
 	}
-	cout<<"\n";
+	for(i=0;i<n;i++)
+	{
+		for(j=0;j<m;j++)
+		{
+			if(!visit[i][j] && G[i][j])
+			{
+				cnt=0;
+				recur(i,j,n,m);
+				size[cnt]++;
+			}
+		}
+	}
+	vector<pair<ll,ll>>a;
+	cnt=0;
+	for(auto x:size)
+	{
+		a.push_back(x);
+		cnt+=x.second;
+	}
+	sort(a.begin(),a.end());
+	cout<<cnt<<"\n";
+	for(auto x:a)
+	{
+		cout<<x.first<<" "<<x.second<<"\n";
+	}
+	size.clear();
+	a.clear();
+	return 1;
 }
 
 int main()
@@ -182,8 +200,9 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    while(t--)
+    //cin>>t;
+    while(true)
     {
-        solve();
+        if(solve()==-1)break;
     }
 }

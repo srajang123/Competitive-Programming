@@ -109,9 +109,11 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	return order;
 }
 vector<bool>dvisited(N,false);
-vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
+vector<vector<ll>>G(N);
+map<pair<ll,ll>,ll>mp;
+bool dfs(ll s)
 {
-	vector<ll>order;
+	bool f=false;
 	stack<ll>q;
 	q.push(s);
 	while(!q.empty())
@@ -120,60 +122,73 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 		q.pop();
 		if(!dvisited[v])
 		{
-			order.push_back(v);
 			dvisited[v]=true;
-		}
-		for(ll i=0;i<G[v].size();i++)
-		{
-			if(!dvisited[G[v][i]])
+			for(ll i=0;i<G[v].size();i++)
 			{
-				q.push(G[v][i]);
+				if(mp[{v,G[v][i]}])
+				{
+					mp[{v,G[v][i]}]=0;
+					mp[{G[v][i],v}]=0;
+					f=true;
+				}
+				if(!dvisited[G[v][i]])
+				{
+					q.push(G[v][i]);
+				}
 			}
 		}
 	}
-	return order;
+	return f;
 }
-
+vector<unordered_set<ll>>H(N);
+void dfs(ll s,ll p)
+{
+	G[s].push_back(p);
+	for(auto x:H[s])
+	{
+		if(x!=p)
+		{
+			dfs(x,s);
+		}
+	}
+}
 //Main Solution
 
 void solve()
 {
-	ll i,j,k,n,m,l;
+	ll n,i,j,k,l;
 	cin>>n;
-	vector<ll>p(n),a(n),b(n),q(n,0),d(n,0);
-	vector<vector<pair<ll,ll>>>c(4);
-	for(i=0;i<n;i++)
-		cin>>p[i];
-	for(i=0;i<n;i++)
+	for(i=1;i<n;i++)
 	{
-		cin>>a[i];
-		c[a[i]].push_back({p[i],i});
+		 cin>>j>>k>>l;
+		 if(l==2)
+		 {
+			mp[{j,k}]=1;
+			mp[{k,j}]=1;
+		 }
+		 H[j].insert(k);
+		 H[k].insert(j);
 	}
-	for(i=0;i<n;i++)
+	vector<ll>ans,p;
+	dfs(1,1);
+	for(i=2;i<=n;i++)
 	{
-		cin>>b[i];
-		c[b[i]].push_back({p[i],i});
+		if(H[i].size()==1)
+			p.push_back(i);
 	}
-	for(i=1;i<=3;i++)
-		sort(c[i].begin(),c[i].end());
-	cin>>m;
-	vector<ll>idx(4,0);
-	while(m--)
+	for(auto i:p)
 	{
-		cin>>k;
-		l=-1;
-		while(c[k].size()>idx[k] && l==-1)
+		if(!dvisited[i])
 		{
-			if(d[c[k][idx[k]].second]==0)
+			if(dfs(i))
 			{
-				l=c[k][idx[k]].first;
-				d[c[k][idx[k]].second]=1;
+				ans.push_back(i);
 			}
-			idx[k]++;
 		}
-		cout<<l<<" ";
 	}
-	cout<<"\n";
+	cout<<ans.size()<<"\n";
+	for(auto x:ans)
+		cout<<x<<" ";
 }
 
 int main()
@@ -182,6 +197,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
+    //cin>>t;
     while(t--)
     {
         solve();

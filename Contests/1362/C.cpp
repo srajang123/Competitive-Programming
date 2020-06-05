@@ -138,42 +138,7 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,m,l;
-	cin>>n;
-	vector<ll>p(n),a(n),b(n),q(n,0),d(n,0);
-	vector<vector<pair<ll,ll>>>c(4);
-	for(i=0;i<n;i++)
-		cin>>p[i];
-	for(i=0;i<n;i++)
-	{
-		cin>>a[i];
-		c[a[i]].push_back({p[i],i});
-	}
-	for(i=0;i<n;i++)
-	{
-		cin>>b[i];
-		c[b[i]].push_back({p[i],i});
-	}
-	for(i=1;i<=3;i++)
-		sort(c[i].begin(),c[i].end());
-	cin>>m;
-	vector<ll>idx(4,0);
-	while(m--)
-	{
-		cin>>k;
-		l=-1;
-		while(c[k].size()>idx[k] && l==-1)
-		{
-			if(d[c[k][idx[k]].second]==0)
-			{
-				l=c[k][idx[k]].first;
-				d[c[k][idx[k]].second]=1;
-			}
-			idx[k]++;
-		}
-		cout<<l<<" ";
-	}
-	cout<<"\n";
+
 }
 
 int main()
@@ -182,6 +147,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
+    cin>>t;
     while(t--)
     {
         solve();
