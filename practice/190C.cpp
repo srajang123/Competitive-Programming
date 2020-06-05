@@ -133,102 +133,89 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 }
 
 //Main Solution
-
+vector<string>a;
+string ans="";
+bool f=true;
+ll i=0;
+void stl()
+{
+	if(i>=a.size()|| !f)
+	{
+		f=false;
+		return;
+	}
+	ans+=a[i];
+	if(a[i]=="pair")
+	{
+		if(f)
+		{
+			i++;
+			ans+="<";
+			stl();
+			ans+=",";
+		}
+		if(f)
+		{
+			i++;
+			stl();
+			ans+=">";
+		}
+	}
+}
 void solve()
 {
-	ll i,j,k,n;
-	string s;
+	ll n,i=0;
+	string s,ans="";
 	cin>>n;
-	vector<ll>a;
-	while(n)
+	stack<char>a;
+	while(cin>>s)
 	{
-		cin>>s;
+		cout<<s<<":\n"
+		if(i!=0 && a.empty() && (s=="pair"||s=="int"))
+		{
+			cout<<"Error occurred";
+			return;
+		}
 		if(s=="pair")
 		{
-			a.push_back(1);
+			ans+="pair<";
+			a.push('<');
 		}
 		else
 		{
-			a.push_back(0);
-			n--;
-		}
-		a.push_back(-1);
-	}
-	j=0;
-	vector<ll>b;
-	for(i=0;i<a.size();i++)
-	{
-		if(a[i]!=1 && a[i]!=0)
-			continue;
-		if(a[i]==1)
-		{
-			/*if(b.size()>0)
+			if(!a.empty() && a.top()==','){
+				ans+="int,";
+				a.pop();
+				a.push(',');
+			}
+			else if(!a.empty() && a.top()==',')
 			{
-				b[b.size()-1]--;
-			}*/
-			b.push_back(2);
-			a[i+1]=2;
-		}
-		else if(b.size()>0)
-		{
-			j=b.size()-1;
-			b[j]--;
-			if(b[j]==0)
-			{
-				b.pop_back();
-				a[i+1]=3;
-				if(b.size()>0)
+				if(!a.empty() && a.top()==',')
 				{
-					if(b.back()==1)
-						a.insert(a.begin(),i+2,4);
+					ans+="int>";
+					a.top();
 				}
-				while(b.size()>0)
+				while(!a.empty() && a.top()=='<')
 				{
-					j=b.size()-1;
-					b[j]--;
-					if(b[j]==0)
-					{
-						b.pop_back();
-						a.insert(a.begin()+i+1,3);
-						if(b.size()>0)
-						{
-							if(b.back()==1)
-								a.insert(a.begin(),i+2,4);
-						}
-					}
-					else
-					{
-						break;
-					}
+					ans+=">";
+					a.pop();
+				}
+				if(!a.empty() && a.top()=='<')
+				{
+					ans+=',';
+					a.pop();
+					a.push(',');
 				}
 			}
-			else
-			{
-				a[i+1]=4;
-			}
 		}
+		i++;
 	}
-	if(b.size()>0)
-	{
+	if(i==1 && s=="int")
+		cout<<s;
+	else if(!a.empty() || ans=="")
 		cout<<"Error occurred";
-		return;
-	}
-	for(i=0;i<a.size();i++)
-	{
-		switch (a[i])
-		{
-		case 0:	cout<<"int";
-				break;
-		case 1: cout<<"pair";
-				break;
-		case 2: cout<<"<";
-				break;
-		case 3: cout<<">";
-				break;
-		case 4: cout<<",";
-				break;
-		}
-	}
+	else
+		cout<<ans;
 }
 
 int main()
@@ -236,10 +223,5 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 	cout.tie(NULL);
-    ll t=1;
-    //cin>>t;
-    while(t--)
-    {
-        solve();
-    }
+	solve();
 }

@@ -140,7 +140,7 @@ bool dfs(ll s)
 	}
 	return f;
 }
-vector<vector<ll>>H(N);
+vector<unordered_set<ll>>H(N);
 void dfs(ll s,ll p)
 {
 	G[s].push_back(p);
@@ -166,12 +166,17 @@ void solve()
 			mp[{j,k}]=1;
 			mp[{k,j}]=1;
 		 }
-		 H[j].push_back(k);
-		 H[k].push_back(j);
+		 H[j].insert(k);
+		 H[k].insert(j);
 	}
-	vector<ll>ans;
+	vector<ll>ans,p;
 	dfs(1,1);
-	for(i=n;i>=1;i--)
+	for(i=2;i<=n;i++)
+	{
+		if(H[i].size()==1)
+			p.push_back(i);
+	}
+	for(auto i:p)
 	{
 		if(!dvisited[i])
 		{

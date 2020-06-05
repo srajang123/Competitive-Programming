@@ -109,28 +109,28 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	return order;
 }
 vector<bool>dvisited(N,false);
-vector<vector<ll>>G(N);
-map<pair<ll,ll>,ll>mp;
-bool dfs(ll s)
+vector<ll>G[N];
+ll ans=0;
+vector<ll>in(N,-1);
+unordered_set<ll> dfs(ll s)
 {
-	bool f=false;
+	unordered_set<ll>order;
 	stack<ll>q;
 	q.push(s);
+	bool f=false,p=true;
 	while(!q.empty())
 	{
 		ll v=q.top();
 		q.pop();
+		in[v]+=2;
 		if(!dvisited[v])
 		{
+			order.insert(v);
 			dvisited[v]=true;
+			if(G[v].size()!=2)
+				p=false;
 			for(ll i=0;i<G[v].size();i++)
 			{
-				if(mp[{v,G[v][i]}])
-				{
-					mp[{v,G[v][i]}]=0;
-					mp[{G[v][i],v}]=0;
-					f=true;
-				}
 				if(!dvisited[G[v][i]])
 				{
 					q.push(G[v][i]);
@@ -138,52 +138,29 @@ bool dfs(ll s)
 			}
 		}
 	}
-	return f;
+	if(p)
+		ans++;
+	return order;
 }
-vector<vector<ll>>H(N);
-void dfs(ll s,ll p)
-{
-	G[s].push_back(p);
-	for(auto x:H[s])
-	{
-		if(x!=p)
-		{
-			dfs(x,s);
-		}
-	}
-}
+
 //Main Solution
 
 void solve()
 {
-	ll n,i,j,k,l;
-	cin>>n;
-	for(i=1;i<n;i++)
+	ll n,m,i,j,k,l;
+	cin>>n>>m;
+	for(i=0;i<m;i++)
 	{
-		 cin>>j>>k>>l;
-		 if(l==2)
-		 {
-			mp[{j,k}]=1;
-			mp[{k,j}]=1;
-		 }
-		 H[j].push_back(k);
-		 H[k].push_back(j);
+		cin>>j>>k;
+		G[j].push_back(k);
+		G[k].push_back(j);
 	}
-	vector<ll>ans;
-	dfs(1,1);
-	for(i=n;i>=1;i--)
+	for(i=1;i<=n;i++)
 	{
 		if(!dvisited[i])
-		{
-			if(dfs(i))
-			{
-				ans.push_back(i);
-			}
-		}
+			dfs(i);
 	}
-	cout<<ans.size()<<"\n";
-	for(auto x:ans)
-		cout<<x<<" ";
+	cout<<ans;
 }
 
 int main()

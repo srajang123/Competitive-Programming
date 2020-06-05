@@ -108,82 +108,83 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	}
 	return order;
 }
-vector<bool>dvisited(N,false);
-vector<vector<ll>>G(N);
-map<pair<ll,ll>,ll>mp;
-bool dfs(ll s)
+vector<bool>dvisited(N,false),chk(N,false);
+vector<set<ll>>G(N);
+vector<ll> dfs(ll s,ll n)
 {
-	bool f=false;
+	vector<ll>order;
 	stack<ll>q;
 	q.push(s);
 	while(!q.empty())
 	{
 		ll v=q.top();
 		q.pop();
-		if(!dvisited[v])
+		if(!dvisited[v] && !chk[v])
 		{
 			dvisited[v]=true;
-			for(ll i=0;i<G[v].size();i++)
+			if(G[v].size()==1)
 			{
-				if(mp[{v,G[v][i]}])
+			    chk[v]=true;
+			    order.push_back(v);
+			}
+			for(auto x:G[v])
+			{
+				if(!dvisited[x] && !chk[x])
 				{
-					mp[{v,G[v][i]}]=0;
-					mp[{G[v][i],v}]=0;
-					f=true;
-				}
-				if(!dvisited[G[v][i]])
-				{
-					q.push(G[v][i]);
+					q.push(x);
 				}
 			}
 		}
 	}
-	return f;
-}
-vector<vector<ll>>H(N);
-void dfs(ll s,ll p)
-{
-	G[s].push_back(p);
-	for(auto x:H[s])
+	for(auto x:order)
 	{
-		if(x!=p)
-		{
-			dfs(x,s);
-		}
+	    G[x].clear();
+    	for(ll i=1;i<=n;i++)
+    	{
+    	    G[i].erase(x);
+    	}
 	}
+	return order;
 }
+
 //Main Solution
 
 void solve()
 {
-	ll n,i,j,k,l;
-	cin>>n;
-	for(i=1;i<n;i++)
+	ll n,m,i,j,k,u=0;
+	cin>>n>>m;
+	for(i=1;i<=m;i++)
 	{
-		 cin>>j>>k>>l;
-		 if(l==2)
-		 {
-			mp[{j,k}]=1;
-			mp[{k,j}]=1;
-		 }
-		 H[j].push_back(k);
-		 H[k].push_back(j);
+		cin>>j>>k;
+		G[j].insert(k);
+		G[k].insert(j);
 	}
-	vector<ll>ans;
-	dfs(1,1);
-	for(i=n;i>=1;i--)
+	bool f=true;
+	k=0;
+	while (f)
 	{
-		if(!dvisited[i])
+		for(i=1;i<=n;i++)
+			dvisited[i]=false;
+		for(i=1;i<=n;i++)
 		{
-			if(dfs(i))
-			{
-				ans.push_back(i);
-			}
+			if(!dvisited[i] && !chk[i])
+				dfs(i,n);
 		}
+		j=0;
+		for(i=1;i<=n;i++)
+		{
+			j+=chk[i]?1:0;
+		}
+		if(j<=k)
+			f=false;
+		else
+		    u++;
+		k=j;
 	}
-	cout<<ans.size()<<"\n";
-	for(auto x:ans)
-		cout<<x<<" ";
+	k=0;
+	for(i=1;i<=n;i++)
+		k+=chk[i]?0:1;
+	cout<<u;
 }
 
 int main()
@@ -192,7 +193,6 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    //cin>>t;
     while(t--)
     {
         solve();
