@@ -138,63 +138,11 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,m;
-	string a,b;
-	cin>>n>>a>>b;
-	vector<vector<ll>>h;
-	bool f=true,c=true;
-	for(i=0;i<n;i++)
-	{
-		vector<ll>t;
-		if(a[i]!=b[i])
-		{
-			t.push_back(i+1);
-			//char p=b[i];
-			//cout<<i<<":"<<b[i]<<"\n";
-			f=false;
-			for(j=i+1;j<n;j++)
-			{
-				if(a[j]!=b[j] && b[j]==b[i])
-				{
-					if(a[j]>b[i])
-					{
-						t.push_back(j+1);
-						//a[j]=b[i];
-					}
-				}
-				else if(a[j]==b[i])
-				{
-					t.push_back(j+1);
-					f=true;
-				}
-			}
-			if(f)
-			{
-				for(auto z:t)
-				{
-					a[z-1]=b[i];
-				}
-			}
-			else
-				break;
-			h.push_back(t);
-			t.clear();
-		}
-	}
-	//cout<<a<<"\n"<<b<<"\n";
-	if(a==b)
-	{
-		cout<<h.size()<<"\n";
-		for(auto x:h)
-		{
-			cout<<x.size()<<" ";
-			for(auto y:x)
-				cout<<y<<" ";
-			cout<<"\n";
-		}
-	}
-	else
-		cout<<"-1\n";
+	ll n;
+	cin>>n;
+	n/=2;
+	n*=3;
+	cout<<n;
 }
 
 int main()
@@ -203,7 +151,6 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    cin>>t;
     while(t--)
     {
         solve();

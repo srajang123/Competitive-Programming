@@ -135,66 +135,35 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 }
 
 //Main Solution
-
+vector<ll>v(N,0);
 void solve()
 {
-	ll i,j,k,n,m;
-	string a,b;
-	cin>>n>>a>>b;
-	vector<vector<ll>>h;
-	bool f=true,c=true;
+	ll n,i,j,k,p,q,t;
+	cin>>n;
+	vector<ll>a(n),F(N,0);
 	for(i=0;i<n;i++)
 	{
-		vector<ll>t;
-		if(a[i]!=b[i])
-		{
-			t.push_back(i+1);
-			//char p=b[i];
-			//cout<<i<<":"<<b[i]<<"\n";
-			f=false;
-			for(j=i+1;j<n;j++)
-			{
-				if(a[j]!=b[j] && b[j]==b[i])
-				{
-					if(a[j]>b[i])
-					{
-						t.push_back(j+1);
-						//a[j]=b[i];
-					}
-				}
-				else if(a[j]==b[i])
-				{
-					t.push_back(j+1);
-					f=true;
-				}
-			}
-			if(f)
-			{
-				for(auto z:t)
-				{
-					a[z-1]=b[i];
-				}
-			}
-			else
-				break;
-			h.push_back(t);
-			t.clear();
-		}
+		cin>>a[i];
+		F[a[i]]++;
 	}
-	//cout<<a<<"\n"<<b<<"\n";
-	if(a==b)
+	for(i=1;i<=200000;i++)
 	{
-		cout<<h.size()<<"\n";
-		for(auto x:h)
+		for(j=i;j<=200000;j+=i)
 		{
-			cout<<x.size()<<" ";
-			for(auto y:x)
-				cout<<y<<" ";
-			cout<<"\n";
+			v[i]+=F[j];
 		}
 	}
-	else
-		cout<<"-1\n";
+	cin>>t;
+	while(t--)
+	{
+		cin>>p>>q;
+		j=lcm(p,q);
+		if(j<=200000)
+			j=v[j];
+		else
+			j=0;
+		cout<<(v[p]+v[q]-j)<<"\n";
+	}
 }
 
 int main()
@@ -203,7 +172,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    cin>>t;
+    //cin>>t;
     while(t--)
     {
         solve();

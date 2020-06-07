@@ -138,63 +138,47 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,m;
-	string a,b;
-	cin>>n>>a>>b;
-	vector<vector<ll>>h;
-	bool f=true,c=true;
-	for(i=0;i<n;i++)
+	ll n,i,j,k,l=0;
+	cin>>n;
+	unordered_map<ll,ll>a;
+	for(i=2;i<=n;i++)
 	{
-		vector<ll>t;
-		if(a[i]!=b[i])
+		if(n%i==0)
 		{
-			t.push_back(i+1);
-			//char p=b[i];
-			//cout<<i<<":"<<b[i]<<"\n";
-			f=false;
-			for(j=i+1;j<n;j++)
+			while(n%i==0)
 			{
-				if(a[j]!=b[j] && b[j]==b[i])
-				{
-					if(a[j]>b[i])
-					{
-						t.push_back(j+1);
-						//a[j]=b[i];
-					}
-				}
-				else if(a[j]==b[i])
-				{
-					t.push_back(j+1);
-					f=true;
-				}
+				a[i]++;
+				n/=i;
 			}
-			if(f)
-			{
-				for(auto z:t)
-				{
-					a[z-1]=b[i];
-				}
-			}
-			else
-				break;
-			h.push_back(t);
-			t.clear();
 		}
 	}
-	//cout<<a<<"\n"<<b<<"\n";
-	if(a==b)
+	k=1;
+	l=0;
+	for(auto x:a)
 	{
-		cout<<h.size()<<"\n";
-		for(auto x:h)
-		{
-			cout<<x.size()<<" ";
-			for(auto y:x)
-				cout<<y<<" ";
-			cout<<"\n";
-		}
+		k*=x.first;
+		l=l>x.second?l:x.second;
 	}
+	ll u=0;
+	for(auto x:a)
+	{
+		if(x.second!=l)
+			u=1;
+	}
+	if(l>0)
+		j=log2(l);
 	else
-		cout<<"-1\n";
+		j=0;
+	if(l>0)
+	{
+		if(power(2,j)!=l)
+		{
+			j+=2;
+			u=0;
+		}
+	}
+	l=j+u;
+	cout<<k<<" "<<l;
 }
 
 int main()
@@ -203,7 +187,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    cin>>t;
+    //cin>>t;
     while(t--)
     {
         solve();
