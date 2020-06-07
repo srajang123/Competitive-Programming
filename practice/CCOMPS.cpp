@@ -87,7 +87,8 @@ ll lcm(ll a,ll b)
 }
 //Graphs
 vector<bool>bvisited(N,false);
-vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
+vector<vector<ll>>G(N);
+vector<ll> bfs(ll s)
 {
 	vector<ll>order;
 	queue<ll>q;
@@ -96,6 +97,7 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	while(!q.empty())
 	{
 		s=q.front();
+		q.pop();
 		order.push_back(s);
 		for(auto x:G[s])
 		{
@@ -138,63 +140,23 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,m;
-	string a,b;
-	cin>>n>>a>>b;
-	vector<vector<ll>>h;
-	bool f=true,c=true;
-	for(i=0;i<n;i++)
+	ll n,m,i,j,k=0;
+	cin>>n>>m;
+	while(m--)
 	{
-		vector<ll>t;
-		if(a[i]!=b[i])
+		cin>>i>>j;
+		G[i].push_back(j);
+		G[j].push_back(i);
+	}
+	for(i=1;i<=n;i++)
+	{
+		if(!bvisited[i])
 		{
-			t.push_back(i+1);
-			//char p=b[i];
-			//cout<<i<<":"<<b[i]<<"\n";
-			f=false;
-			for(j=i+1;j<n;j++)
-			{
-				if(a[j]!=b[j] && b[j]==b[i])
-				{
-					if(a[j]>b[i])
-					{
-						t.push_back(j+1);
-						//a[j]=b[i];
-					}
-				}
-				else if(a[j]==b[i])
-				{
-					t.push_back(j+1);
-					f=true;
-				}
-			}
-			if(f)
-			{
-				for(auto z:t)
-				{
-					a[z-1]=b[i];
-				}
-			}
-			else
-				break;
-			h.push_back(t);
-			t.clear();
+			bfs(i);
+			k++;
 		}
 	}
-	//cout<<a<<"\n"<<b<<"\n";
-	if(a==b)
-	{
-		cout<<h.size()<<"\n";
-		for(auto x:h)
-		{
-			cout<<x.size()<<" ";
-			for(auto y:x)
-				cout<<y<<" ";
-			cout<<"\n";
-		}
-	}
-	else
-		cout<<"-1\n";
+	cout<<k;
 }
 
 int main()
@@ -203,7 +165,6 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    cin>>t;
     while(t--)
     {
         solve();

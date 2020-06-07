@@ -135,66 +135,32 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 }
 
 //Main Solution
-
+vector<ll>a(1,0),b(N,0);
+void pre()
+{
+	ll i,j,k,n=1;
+	for(i=2;i<N;i++)
+	{
+		if(b[i]==0)
+		{
+			b[i]=1;
+			for(j=2*i;j<=N;j+=i)
+			{
+				b[j]++;
+			}
+		}
+	}
+	for(i=30;i<N;i++)
+	{
+		if(b[i]>=3)
+			a.push_back(i);
+	}
+}
 void solve()
 {
-	ll i,j,k,n,m;
-	string a,b;
-	cin>>n>>a>>b;
-	vector<vector<ll>>h;
-	bool f=true,c=true;
-	for(i=0;i<n;i++)
-	{
-		vector<ll>t;
-		if(a[i]!=b[i])
-		{
-			t.push_back(i+1);
-			//char p=b[i];
-			//cout<<i<<":"<<b[i]<<"\n";
-			f=false;
-			for(j=i+1;j<n;j++)
-			{
-				if(a[j]!=b[j] && b[j]==b[i])
-				{
-					if(a[j]>b[i])
-					{
-						t.push_back(j+1);
-						//a[j]=b[i];
-					}
-				}
-				else if(a[j]==b[i])
-				{
-					t.push_back(j+1);
-					f=true;
-				}
-			}
-			if(f)
-			{
-				for(auto z:t)
-				{
-					a[z-1]=b[i];
-				}
-			}
-			else
-				break;
-			h.push_back(t);
-			t.clear();
-		}
-	}
-	//cout<<a<<"\n"<<b<<"\n";
-	if(a==b)
-	{
-		cout<<h.size()<<"\n";
-		for(auto x:h)
-		{
-			cout<<x.size()<<" ";
-			for(auto y:x)
-				cout<<y<<" ";
-			cout<<"\n";
-		}
-	}
-	else
-		cout<<"-1\n";
+	ll i,j,k,n;
+	cin>>n;
+	cout<<a[n]<<"\n";
 }
 
 int main()
@@ -204,6 +170,7 @@ int main()
 	cout.tie(NULL);
     ll t=1;
     cin>>t;
+	pre();
     while(t--)
     {
         solve();

@@ -141,30 +141,30 @@ void solve()
 	ll i,j,k,n,m;
 	string a,b;
 	cin>>n>>a>>b;
-	vector<vector<ll>>h;
+	vector<unordered_set<ll>>h;
 	bool f=true,c=true;
 	for(i=0;i<n;i++)
 	{
-		vector<ll>t;
+		unordered_set<ll>t;
 		if(a[i]!=b[i])
 		{
-			t.push_back(i+1);
+			t.insert(i+1);
 			//char p=b[i];
 			//cout<<i<<":"<<b[i]<<"\n";
 			f=false;
-			for(j=i+1;j<n;j++)
+			for(j=0;j<n;j++)
 			{
 				if(a[j]!=b[j] && b[j]==b[i])
 				{
 					if(a[j]>b[i])
 					{
-						t.push_back(j+1);
+						t.insert(j+1);
 						//a[j]=b[i];
 					}
 				}
 				else if(a[j]==b[i])
 				{
-					t.push_back(j+1);
+					t.insert(j+1);
 					f=true;
 				}
 			}
@@ -189,7 +189,7 @@ void solve()
 		{
 			cout<<x.size()<<" ";
 			for(auto y:x)
-				cout<<y<<" ";
+				cout<<y-1<<" ";
 			cout<<"\n";
 		}
 	}

@@ -109,7 +109,9 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	return order;
 }
 vector<bool>dvisited(N,false);
-vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
+//vector<ll>a(N),b(N),c(N);
+vector<vector<ll>>G(N);
+vector<ll> dfs(ll s)
 {
 	vector<ll>order;
 	stack<ll>q;
@@ -133,68 +135,37 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 	}
 	return order;
 }
-
+bool chk(ll a[],ll b[],ll c[],ll n)
+{
+	if(n==0)return true;
+	if(n==1)
+		return (a[0]==b[0] && b[0]==c[0]);
+	ll id=-1;
+	for(ll i=0;i<n;i++)
+	{
+		if(a[i]==b[0])
+		{
+			id=i;
+			break;
+		}
+	}
+	if(id==-1)return false;
+	return (chk(a+1,b,c,id)&&chk(a+id+1,b+id+1,c+id,n-id-1));
+}
 //Main Solution
 
 void solve()
 {
-	ll i,j,k,n,m;
-	string a,b;
-	cin>>n>>a>>b;
-	vector<vector<ll>>h;
-	bool f=true,c=true;
+	ll i,j,k,n;
+	cin>>n;
+	ll a[n],b[n],c[n];
 	for(i=0;i<n;i++)
-	{
-		vector<ll>t;
-		if(a[i]!=b[i])
-		{
-			t.push_back(i+1);
-			//char p=b[i];
-			//cout<<i<<":"<<b[i]<<"\n";
-			f=false;
-			for(j=i+1;j<n;j++)
-			{
-				if(a[j]!=b[j] && b[j]==b[i])
-				{
-					if(a[j]>b[i])
-					{
-						t.push_back(j+1);
-						//a[j]=b[i];
-					}
-				}
-				else if(a[j]==b[i])
-				{
-					t.push_back(j+1);
-					f=true;
-				}
-			}
-			if(f)
-			{
-				for(auto z:t)
-				{
-					a[z-1]=b[i];
-				}
-			}
-			else
-				break;
-			h.push_back(t);
-			t.clear();
-		}
-	}
-	//cout<<a<<"\n"<<b<<"\n";
-	if(a==b)
-	{
-		cout<<h.size()<<"\n";
-		for(auto x:h)
-		{
-			cout<<x.size()<<" ";
-			for(auto y:x)
-				cout<<y<<" ";
-			cout<<"\n";
-		}
-	}
-	else
-		cout<<"-1\n";
+		cin>>a[i];
+	for(i=0;i<n;i++)
+		cin>>b[i];
+	for(i=0;i<n;i++)
+		cin>>c[i];
+	cout<<(chk(a,c,b,n)?"yes":"no");
 }
 
 int main()
@@ -203,7 +174,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    cin>>t;
+    //cin>>t;
     while(t--)
     {
         solve();

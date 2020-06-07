@@ -138,63 +138,61 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,m;
-	string a,b;
-	cin>>n>>a>>b;
-	vector<vector<ll>>h;
-	bool f=true,c=true;
-	for(i=0;i<n;i++)
+	ll l,r,x,y,i,j,k,m,n;
+	set<pair<ll,ll>>st;
+	cin>>l>>r>>x>>y;
+	m=x*y;
+	k=0;
+	/*i=ceil((l*1.0)/x);
+	i*=x;
+	for(i;i<=r;i+=x)
 	{
-		vector<ll>t;
-		if(a[i]!=b[i])
+		j=m/i;
+		n=gcd(i,j);
+		if(n==x && y==(i*j)/n)
 		{
-			t.push_back(i+1);
-			//char p=b[i];
-			//cout<<i<<":"<<b[i]<<"\n";
-			f=false;
-			for(j=i+1;j<n;j++)
+			//cout<<i<<","<<j<<"\n";
+			k++;
+		}
+	}*/
+	for(i=1;i*i<=x;i++)
+	{
+		if(x%i==0)
+		{
+			l=m/i;
+			ll u=gcd(i,l);
+			if(u==x && m/u==y)
+				st.insert({i,l});
+			j=x/i;
+			if(i!=j)
 			{
-				if(a[j]!=b[j] && b[j]==b[i])
-				{
-					if(a[j]>b[i])
-					{
-						t.push_back(j+1);
-						//a[j]=b[i];
-					}
-				}
-				else if(a[j]==b[i])
-				{
-					t.push_back(j+1);
-					f=true;
-				}
+				l=m/j;
+				ll u=gcd(j,l);
+				if(u==x && m/u==y)
+					st.insert({j,l});
 			}
-			if(f)
-			{
-				for(auto z:t)
-				{
-					a[z-1]=b[i];
-				}
-			}
-			else
-				break;
-			h.push_back(t);
-			t.clear();
 		}
 	}
-	//cout<<a<<"\n"<<b<<"\n";
-	if(a==b)
+	for(i=1;i*i<=y;i++)
 	{
-		cout<<h.size()<<"\n";
-		for(auto x:h)
+		if(y%i==0)
 		{
-			cout<<x.size()<<" ";
-			for(auto y:x)
-				cout<<y<<" ";
-			cout<<"\n";
+			l=m/i;
+			ll u=gcd(i,l);
+			if(u==x && m/u==y)
+				k++;
+			j=y/i;
+			if(i!=j)
+			{
+				l=m/j;
+				ll u=gcd(j,l);
+				if(u==x && m/u==y)
+					k++;
+			}
 		}
 	}
-	else
-		cout<<"-1\n";
+	k=st.size();
+	cout<<k;
 }
 
 int main()
@@ -203,7 +201,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    cin>>t;
+    //cin>>t;
     while(t--)
     {
         solve();
