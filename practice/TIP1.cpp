@@ -170,28 +170,22 @@ void totsieve()
 				S[j]=(S[j]/i)*(i-1);
 		}
 	}
-	float z=5.0;
-	for(i=2;i<M;i++)
+	double f=INT64_MAX*1.0;
+	j=S[1];
+	for(i=1;i<=n;i++)
 	{
-		//cout<<((i*1.0)/S[i])<<":\n";
-		if((((i*1.0)/S[i])<=z) && permut(i,S[i]))
-		{
-			res[i]=i;
-			z=(i*1.0)/S[i];
-			//cout<<z<<",\n";
-		}
-		else
-			res[i]=res[i-1];
+		double t;
+		t=(i*1.0)/S[i];
+		if(t<f)
+			j=S[i];
+		S[i]=j;
 	}
 }
 void solve()
 {
 	ll n;
 	cin>>n;
-	if(res[n]<1)
-		cout<<"No solution\n";
-	else
-		cout<<res[n]<<"\n";
+	cout<<S[n]<<"\n";
 }
 
 int main()

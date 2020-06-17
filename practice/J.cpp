@@ -2,7 +2,7 @@
 using namespace std;
 #define ll long long
 #define N 1000005
-#define M 1000000007
+#define M 998244353 
 
 //Prime Numbers
 
@@ -109,11 +109,15 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	return order;
 }
 vector<bool>dvisited(N,false);
-vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
+vector<vector<ll>>G(N);
+bool f=true;
+vector<ll>a(N,-1);
+vector<ll> dfs(ll s,ll c)
 {
 	vector<ll>order;
 	stack<ll>q;
 	q.push(s);
+	a[s]=c;
 	while(!q.empty())
 	{
 		ll v=q.top();
@@ -123,55 +127,95 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 			order.push_back(v);
 			dvisited[v]=true;
 		}
+		c=a[v]^1;
 		for(ll i=0;i<G[v].size();i++)
 		{
+			if(a[G[v][i]]==-1||a[G[v][i]]==c)
+				a[G[v][i]]=c;
+			else
+			{
+				//cout<<G[v][i]<<","<<v<<"+"<<c<<"\n";
+				f=false;
+			}
 			if(!dvisited[G[v][i]])
 			{
 				q.push(G[v][i]);
 			}
 		}
+		/*for(ll o=1;o<=4;o++)
+			cout<<a[o]<<" ";
+		cout<<"\n";*/
 	}
 	return order;
 }
 
 //Main Solution
-
+void init(ll n)
+{
+	f=true;
+	for(ll i=1;i<=n;i++)
+	{
+		a[i]=-1;
+		dvisited[i]=false;
+	}
+}
 void solve()
 {
-	ll i,j,k,n,x,y;
-	cin>>x>>y;
-	ll p,q;
-	if(abs(x)<abs(y))
+	ll n,m,i,j,k,l;
+	cin>>n>>m;
+	for(i=0;i<m;i++)
 	{
-		p=abs(x);
-		q=abs(y);
-		if(p+1!=power(2,log2(p)+1))
-			p=power(2,log2(p)+1)-1;
-		j=log2(p)+1;
-		k=0;
-		while(k<q)
-		{
-			k+=power(2,j);
-			j++;
-		}
-		q=k;
+		cin>>j>>k;
+		G[j].push_back(k);
+		G[k].push_back(j);
 	}
-	else
+	init(n);
+	vector<vector<ll>>p(2);
+	for(i=1;i<=n;i++)
 	{
-		p=abs(x);
-		q=abs(y);
-		if(q+1!=power(2,log2(q)+1))
-			q=power(2,log2(q)+1)-1;
-		j=log2(q)+1;
-		k=0;
-		while(k<p)
+		if(!dvisited[i])
 		{
-			k+=power(2,j);
-			j++;
+			vector<ll>g=dfs(i,0);
+			if(f)
+			{
+				k=1;
+				for(auto u:g)
+				{
+					k*=a[u]==0?2:1;
+				}
+			}
+			else
+				k=0;
+			for(auto x:g)
+			{
+				dvisited[x]=false;
+				a[x]=-1;
+			}
+			f=true;
+			g.clear();
+			g=dfs(i,1);
+			if(f)
+			{
+				l=1;
+				for(auto u:g)
+					l*=a[u]==0?2:1;
+			}
+			else
+				l=0;
+			p[0].push_back(k);
+			p[1].push_back(l);
+			g.clear();
 		}
-		p=k;
 	}
-	
+	k=1;
+	for(i=0;i<p[0].size();i++)
+	{
+		j=(p[0][i]+p[1][i])%M;
+		k=(k*j)%M;
+	}
+	cout<<k<<"\n";
+	for(i=1;i<=n;i++)
+		G[i].clear();
 }
 
 int main()
@@ -179,11 +223,10 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 	cout.tie(NULL);
-    ll t=1,i;
+    ll t=1;
     cin>>t;
-	for(i=1;i<=t;i++)
+    while(t--)
     {
-		cout<<"Case #"<<i<<": ";
         solve();
     }
 }

@@ -109,69 +109,43 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	return order;
 }
 vector<bool>dvisited(N,false);
-vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
+vector<vector<ll>>G(N);
+vector<ll>cnt(N,0);
+ll dfs(ll s)
 {
-	vector<ll>order;
-	stack<ll>q;
-	q.push(s);
-	while(!q.empty())
+	if(dvisited[s])return 0;
+	dvisited[s]=true;
+	ll k=0;
+	if(G[s].size()==1 && s!=1)k=1;
+	for(auto x:G[s])
 	{
-		ll v=q.top();
-		q.pop();
-		if(!dvisited[v])
-		{
-			order.push_back(v);
-			dvisited[v]=true;
-		}
-		for(ll i=0;i<G[v].size();i++)
-		{
-			if(!dvisited[G[v][i]])
-			{
-				q.push(G[v][i]);
-			}
-		}
+		if(!dvisited[x])
+			k+=dfs(x);
 	}
-	return order;
+	cnt[s]=max(cnt[s],k);
+	return k;
 }
 
 //Main Solution
 
 void solve()
 {
-	ll i,j,k,n,x,y;
-	cin>>x>>y;
-	ll p,q;
-	if(abs(x)<abs(y))
+	ll i,j,k,n;
+	cin>>n;
+	for(i=2;i<=n;i++)
 	{
-		p=abs(x);
-		q=abs(y);
-		if(p+1!=power(2,log2(p)+1))
-			p=power(2,log2(p)+1)-1;
-		j=log2(p)+1;
-		k=0;
-		while(k<q)
-		{
-			k+=power(2,j);
-			j++;
-		}
-		q=k;
+		cin>>j;
+		G[i].push_back(j);
+		G[j].push_back(i);
 	}
-	else
-	{
-		p=abs(x);
-		q=abs(y);
-		if(q+1!=power(2,log2(q)+1))
-			q=power(2,log2(q)+1)-1;
-		j=log2(q)+1;
-		k=0;
-		while(k<p)
-		{
-			k+=power(2,j);
-			j++;
-		}
-		p=k;
-	}
-	
+	dfs(1);
+	vector<ll>a;
+	for(i=1;i<=n;i++)
+		a.push_back(cnt[i]);
+	sort(a.begin(),a.end());
+	if(n==1)a[0]=1;
+	for(auto x:a)
+		cout<<x<<" ";
 }
 
 int main()
@@ -179,11 +153,10 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 	cout.tie(NULL);
-    ll t=1,i;
-    cin>>t;
-	for(i=1;i<=t;i++)
+    ll t=1;
+    //cin>>t;
+    while(t--)
     {
-		cout<<"Case #"<<i<<": ";
         solve();
     }
 }

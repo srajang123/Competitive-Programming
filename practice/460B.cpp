@@ -138,40 +138,30 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,x,y;
-	cin>>x>>y;
-	ll p,q;
-	if(abs(x)<abs(y))
+	ll a,b,c,i,j,k,l,m,n;
+	cin>>a>>b>>c;
+	vector<ll>an;
+	for(i=1;i<=81;i++)
 	{
-		p=abs(x);
-		q=abs(y);
-		if(p+1!=power(2,log2(p)+1))
-			p=power(2,log2(p)+1)-1;
-		j=log2(p)+1;
-		k=0;
-		while(k<q)
+		j=power(i,a);
+		j*=b;
+		j+=c;
+		k=j;
+		if(k>0 && k<1000000000)
 		{
-			k+=power(2,j);
-			j++;
+			l=0;
+			while(k)
+			{
+				l+=k%10;
+				k/=10;
+			}
+			if(l==i)
+				an.push_back(j);
 		}
-		q=k;
 	}
-	else
-	{
-		p=abs(x);
-		q=abs(y);
-		if(q+1!=power(2,log2(q)+1))
-			q=power(2,log2(q)+1)-1;
-		j=log2(q)+1;
-		k=0;
-		while(k<p)
-		{
-			k+=power(2,j);
-			j++;
-		}
-		p=k;
-	}
-	
+	cout<<an.size()<<"\n";
+	for(auto x:an)
+		cout<<x<<" ";
 }
 
 int main()
@@ -179,11 +169,10 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 	cout.tie(NULL);
-    ll t=1,i;
-    cin>>t;
-	for(i=1;i<=t;i++)
+    ll t=1;
+    //cin>>t;
+    while(t--)
     {
-		cout<<"Case #"<<i<<": ";
         solve();
     }
 }

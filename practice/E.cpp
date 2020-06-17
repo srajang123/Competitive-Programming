@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long
-#define N 1000005
+#define N 20000
 #define M 1000000007
 
 //Prime Numbers
@@ -138,40 +138,23 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 
 void solve()
 {
-	ll i,j,k,n,x,y;
-	cin>>x>>y;
-	ll p,q;
-	if(abs(x)<abs(y))
+	ll i,j,l=0,k,n;
+	cin>>n>>k;
+	vector<ll>a;
+	for(i=2;i<=n;i++)
 	{
-		p=abs(x);
-		q=abs(y);
-		if(p+1!=power(2,log2(p)+1))
-			p=power(2,log2(p)+1)-1;
-		j=log2(p)+1;
-		k=0;
-		while(k<q)
-		{
-			k+=power(2,j);
-			j++;
-		}
-		q=k;
+		if(prime[i])
+			a.push_back(i);
 	}
+	for(i=0;i<a.size()-1;i++)
+	{
+		ll u=a[i]+a[i+1]+1;
+		if(u<=n && prime[u])l++;
+	}
+	if(l>=k)
+		 cout<<"YES";
 	else
-	{
-		p=abs(x);
-		q=abs(y);
-		if(q+1!=power(2,log2(q)+1))
-			q=power(2,log2(q)+1)-1;
-		j=log2(q)+1;
-		k=0;
-		while(k<p)
-		{
-			k+=power(2,j);
-			j++;
-		}
-		p=k;
-	}
-	
+		cout<<"NO";	
 }
 
 int main()
@@ -179,11 +162,11 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 	cout.tie(NULL);
-    ll t=1,i;
-    cin>>t;
-	for(i=1;i<=t;i++)
+    ll t=1;
+	sieve();
+    //cin>>t;
+    while(t--)
     {
-		cout<<"Case #"<<i<<": ";
         solve();
     }
 }
