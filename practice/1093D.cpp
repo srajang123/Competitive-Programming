@@ -1,9 +1,9 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 
 using namespace std;
 #define ll long long
 #define N 1000005
-#define M 998244353
+#define M 998244353 
 
 //Prime Numbers
 
@@ -111,16 +111,16 @@ vector<ll> bfs(ll V, vector<vector<ll>> G, ll s)
     return order;
 }
 vector<bool> dvisited(N, false);
-ll p, qq;
+ll p,qq;
 bool f;
-vector<ll> G[N];
-vector<ll> col(N, -1);
+vector<ll>G[N];
+vector<ll>col(N,-1);
 vector<ll> dfs(ll s)
 {
     vector<ll> order;
     stack<ll> q;
     q.push(s);
-    col[s] = 0;
+    col[s]=0;
     p++;
     while (!q.empty())
     {
@@ -134,19 +134,19 @@ vector<ll> dfs(ll s)
             {
                 if (!dvisited[G[v][i]])
                 {
-                    if (col[G[v][i]] == -1)
+                    if(col[G[v][i]]==-1)
                     {
-                        col[G[v][i]] = col[v] ^ 1;
-                        if (col[G[v][i]] == 1)
+                        col[G[v][i]]=col[v]^1;
+                        if(col[G[v][i]]==1)
                         {
-                            //     cout<<"("<<G[v][i]<<")"<<"\n";
+                       //     cout<<"("<<G[v][i]<<")"<<"\n";
                             qq++;
                         }
                         else
                             p++;
                     }
-                    else if (col[G[v][i]] == col[v])
-                        f = true;
+                    else if(col[G[v][i]]==col[v])
+                        f=true;
                     q.push(G[v][i]);
                 }
             }
@@ -159,38 +159,38 @@ vector<ll> dfs(ll s)
 
 void solve()
 {
-    ll n, m, i, j, k;
-    cin >> n >> m;
-    for (i = 1; i <= n; i++)
+    ll n,m,i,j,k;
+    cin>>n>>m;
+    for(i=1;i<=n;i++)
     {
         G[i].clear();
-        dvisited[i] = false;
-        col[i] = -1;
+        dvisited[i]=false;
+        col[i]=-1;
     }
-    while (m--)
+    while(m--)
     {
-        cin >> i >> j;
+        cin>>i>>j;
         G[i].push_back(j);
         G[j].push_back(i);
     }
-    ll r = 1;
-    for (i = 1; i <= n; i++)
+    ll r=1;
+    for(i=1;i<=n;i++)
     {
-        if (!dvisited[i])
+        if(!dvisited[i])
         {
-            f = false;
-            p = qq = 0;
+            f=false;
+            p=qq=0;
             dfs(i);
-            if (f)
+            if(f)
             {
-                r = 0;
+                r=0;
                 break;
             }
             //cout<<p<<","<<qq<<"\n";
-            r = (r * ((power(2, p, M) + power(2, qq, M)) % M)) % M;
+            r=(r*((power(2,p,M)+power(2,qq,M))%M))%M;
         }
     }
-    cout << r << "\n";
+    cout<<r<<"\n";
 }
 
 int main()
@@ -199,7 +199,7 @@ int main()
     cin.tie(NULL);
     cout.tie(NULL);
     ll t = 1;
-    cin >> t;
+    cin>>t;
     while (t--)
     {
         solve();
