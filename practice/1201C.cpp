@@ -160,16 +160,38 @@ bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
 	return a.second<b.second;
 }
 //Main Solution
-
+ll chk(ll m,vector<ll>a)
+{
+	ll i,j,k=0;
+	for(i=a.size()/2;i<a.size();i++)
+	{
+		j=m-a[i];
+		k+=j>0?j:0;
+	}
+	return k;
+}
 void solve()
 {
-	ll a,b;
-	long double p,q;
-	cin>>a>>b;
-	p=b*log10(a);
-	p=p-floor(p);
-	ll l=pow(10,p)*100;
-	cout<<l<<"..."<<power(a,b,1000)<<"\n";;
+	ll n,i,j,k,l,r,m;
+	cin>>n>>k;
+	vector<ll>a(n);
+	for(i=0;i<n;i++)
+		cin>>a[i];
+	sort(a.begin(),a.end());
+	l=1;
+	r=1000000000;
+	while (l!=r)
+	{
+		m=(l+r)/2;
+		if(chk(m,a)<=k)
+			l=m;
+		else
+		{
+			r=m-1;
+		}
+		cout<<m;
+	}
+	cout<<l;
 }
 
 int main()
@@ -178,7 +200,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-	cin>>t;
+	//cin>>t;
     while(t--)
     {
         solve();
