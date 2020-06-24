@@ -163,13 +163,14 @@ bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
 
 void solve()
 {
-	ll a,b;
-	long double p,q;
-	cin>>a>>b;
-	p=b*log10(a);
-	p=p-floor(p);
-	ll l=pow(10,p)*100;
-	cout<<l<<"..."<<power(a,b,1000)<<"\n";;
+	ll a,b,c,d;
+	cin>>c>>a>>b;
+	a=abs(a-b);
+	if(a%3==0 && a/3<=c)
+		cout<<"No";
+	else
+		cout<<"Yes";
+	cout<<"\n";
 }
 
 int main()
