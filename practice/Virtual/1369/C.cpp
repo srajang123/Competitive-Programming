@@ -4,6 +4,15 @@ using namespace std;
 #define N 1000005
 #define M 1000000007
 
+/*
+	*********************************************************************
+	*                             Code By                               *
+	*                                                                   *
+	*                            Srajan Gupta                           *
+	*                            srajang_123                            *
+	*                                                                   *
+	*********************************************************************
+*/
 //Prime Numbers
 
 vector<bool>prime(N+1,true);
@@ -87,7 +96,8 @@ ll lcm(ll a,ll b)
 }
 //Graphs
 vector<bool>bvisited(N,false);
-vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
+vector<vector<ll>>G(N);
+vector<ll> bfs(ll s)
 {
 	vector<ll>order;
 	queue<ll>q;
@@ -96,6 +106,7 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	while(!q.empty())
 	{
 		s=q.front();
+		q.pop();
 		order.push_back(s);
 		for(auto x:G[s])
 		{
@@ -109,7 +120,7 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	return order;
 }
 vector<bool>dvisited(N,false);
-vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
+vector<ll> dfs(ll s)
 {
 	vector<ll>order;
 	stack<ll>q;
@@ -133,34 +144,55 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 	}
 	return order;
 }
+//My Functions
 
+void print(pair<ll,ll>a)
+{
+	cout<<a.first<<" "<<a.second;
+}
+void print(vector<ll>a)
+{
+	for(auto x:a)
+		cout<<x<<" ";
+}
+bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
+{
+	return a.second<b.second;
+}
 //Main Solution
 
 void solve()
 {
-	ll i,j,k=0,l=0,n;
-	string p,q;
-	cin>>n>>p>>q;
-	sort(p.begin(),p.end());
-	sort(q.begin(),q.end());
-	i=0;
-	for(j=0;j<n;j++)
+	ll n,k,i,j,l=0,m;
+	cin>>n>>k;
+	vector<ll>a(n),b;
+	for(i=0;i<n;i++)
+		cin>>a[i];
+	sort(a.rbegin(),a.rend());
+	m=0;
+	for(i=0;i<k;i++)
 	{
-		if(p[i]<=q[j])
-			i++;
-		else
-			k++;
-	}
-	j=n-1;
-	for(i=n-1;i>=0;i--)
-	{
-		if(p[i]<q[j])
+		cin>>j;
+		if(j==1)
 		{
-			j--;
-			l++;
+			l+=a[m++]*2;
+		}
+		else
+		{
+			b.push_back(j);
 		}
 	}
-	cout<<k<<"\n"<<l<<"\n";
+	sort(b.rbegin(),b.rend());
+	reverse(a.begin(),a.end());
+	m=0;
+	for(i=0;i<b.size();i++)
+	{
+		l+=a[m];
+		m+=b[i]-1;
+	}
+	for(i=m;i<n-(k-b.size());i++)
+		l+=a[i];
+	cout<<l<<"\n";
 }
 
 int main()
@@ -169,6 +201,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
+	cin>>t;
     while(t--)
     {
         solve();
