@@ -163,47 +163,35 @@ bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
 
 void solve()
 {
-	ll n,k,t,p,q,i,j;
-	vector<ll>a(1,0),b(1,0),c(1,0);
+	ll n,i,j,k,s=0,l=INT64_MAX,r=-1;
 	cin>>n>>k;
-	while(n--)
+	vector<ll>a(n);
+	for(i=0;i<n;i++)
 	{
-		cin>>t>>p>>q;
-		if(p==1 && q==1)
-			c.push_back(t);
-		else if(p==1)
-			a.push_back(t);
-		else if(q==1)
-			b.push_back(t);
+		cin>>a[i];
+		s+=a[i];
+		if(a[i]%k!=0)
+		{
+			l=min(i,l);
+			r=max(r,i);
+		}
 	}
-	sort(a.begin(),a.end());
-	sort(b.begin(),b.end());
-	sort(c.begin(),c.end());
-	for(i=1;i<a.size();i++)
-		a[i]+=a[i-1];
-	for(i=1;i<b.size();i++)
-		b[i]+=b[i-1];
-	for(i=1;i<c.size();i++)
-		c[i]+=c[i-1];
-	ll ans=INT64_MAX;
-	for(i=0;i<min(k+1,(ll)c.size());i++)
+	if(s%k==0)
 	{
-		if(k-i<(ll)a.size() && k-i<(ll)b.size())
-			ans=min(ans,c[i]+a[k-i]+b[k-i]);
+		n=max(n-l-1,r);
 	}
-	if(ans==INT64_MAX)
-		ans=-1;
-	cout<<ans;
+	cout<<n<<"\n";
 }
 
 int main()
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
 	cout.tie(NULL);
-	ll t=1;
-	while(t--)
-	{
-		solve();
-	}
+    ll t=1;
+	cin>>t;
+    while(t--)
+    {
+        solve();
+    }
 }
