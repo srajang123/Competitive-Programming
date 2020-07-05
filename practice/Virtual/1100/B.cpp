@@ -153,7 +153,7 @@ void print(pair<ll,ll>a)
 void print(vector<ll>a)
 {
 	for(auto x:a)
-		cout<<x<<" ";
+		cout<<x<<"";
 }
 bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
 {
@@ -163,26 +163,30 @@ bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
 
 void solve()
 {
-	ll n,k,i,j,l,m;
-	cin>>n>>k;
-	vector<ll>a(n);
-	for(i=0;i<n;i++)
-	{
+	ll n,m,i,j,k,l;
+	cin>>n>>m;
+	vector<ll>a(m),d(n+1,0);//,b(m,0);//,c(n+1,0);
+	for(i=0;i<m;i++)
 		cin>>a[i];
-	}
-	l=m=0;
-	for(i=0;i<n;i++)
+	unordered_set<ll>c;
+	for(i=0;i<m;i++)
 	{
-		m+=(a[i]+l)/k;
-		l=(a[i]+l)%k;
-		if(l>a[i])
+		d[a[i]]++;
+		c.insert(a[i]);
+		if(c.size()==n)
 		{
-			m++;
-			l=0;
+			cout<<"1";
+			c.clear();
+			for(j=1;j<=n;j++)
+			{
+				d[j]--;
+				if(d[j]>0)
+					c.insert(j);
+			}
 		}
+		else
+			cout<<"0";
 	}
-	m+=l>0;
-	cout<<m;
 }
 
 int main()
@@ -191,6 +195,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
+	//cin>>t;
     while(t--)
     {
         solve();

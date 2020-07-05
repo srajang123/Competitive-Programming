@@ -97,6 +97,7 @@ ll lcm(ll a,ll b)
 //Graphs
 vector<bool>bvisited(N,false);
 vector<vector<ll>>G(N);
+/*
 vector<ll> bfs(ll s)
 {
 	vector<ll>order;
@@ -118,12 +119,12 @@ vector<ll> bfs(ll s)
 		}
 	}
 	return order;
-}
+}*/
 vector<bool>dvisited(N,false);
 vector<ll> dfs(ll s)
 {
 	vector<ll>order;
-	stack<ll>q;
+	priority_queue<ll,vector<ll>,greater<ll>>q;
 	q.push(s);
 	while(!q.empty())
 	{
@@ -134,11 +135,11 @@ vector<ll> dfs(ll s)
 			order.push_back(v);
 			dvisited[v]=true;
 		}
-		for(ll i=0;i<G[v].size();i++)
+		for(auto x:G[v])
 		{
-			if(!dvisited[G[v][i]])
+			if(!dvisited[x])
 			{
-				q.push(G[v][i]);
+				q.push(x);
 			}
 		}
 	}
@@ -163,26 +164,32 @@ bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
 
 void solve()
 {
-	ll n,k,i,j,l,m;
-	cin>>n>>k;
-	vector<ll>a(n);
-	for(i=0;i<n;i++)
+	ll n,m,i,j,k;
+	cin>>n>>m;
+	while(m--)
 	{
-		cin>>a[i];
+		cin>>i>>j;
+		G[i].push_back(j);
+		G[j].push_back(i);
 	}
-	l=m=0;
-	for(i=0;i<n;i++)
+	vector<ll>order;
+	set<ll>q;
+	q.insert(1);
+	while(!q.empty())
 	{
-		m+=(a[i]+l)/k;
-		l=(a[i]+l)%k;
-		if(l>a[i])
+		ll v=*q.begin();
+		q.erase(v);
+		order.push_back(v);
+		dvisited[v]=true;
+		for(auto x:G[v])
 		{
-			m++;
-			l=0;
+			if(!dvisited[x])
+			{
+				q.insert(x);
+			}
 		}
 	}
-	m+=l>0;
-	cout<<m;
+	print(order);
 }
 
 int main()
@@ -191,6 +198,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
+	//cin>>t;
     while(t--)
     {
         solve();

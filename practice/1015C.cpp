@@ -160,29 +160,33 @@ bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
 	return a.second<b.second;
 }
 //Main Solution
-
+bool compress(const pair<ll,ll>&a,const pair<ll,ll>&b)
+{
+	return (a.first-a.second)>(b.first-b.second);
+}
 void solve()
 {
-	ll n,k,i,j,l,m;
-	cin>>n>>k;
-	vector<ll>a(n);
+	ll n,m,i,j,k,l=0,u=0;
+	cin>>n>>m;
+	vector<pair<ll,ll>>a(n);
 	for(i=0;i<n;i++)
 	{
-		cin>>a[i];
+		cin>>j>>k;
+		l+=j;
+		a[i]={j,k};
 	}
-	l=m=0;
-	for(i=0;i<n;i++)
+	sort(a.begin(),a.end(),compress);
+	i=0;
+	while(l>m && i<n)
 	{
-		m+=(a[i]+l)/k;
-		l=(a[i]+l)%k;
-		if(l>a[i])
-		{
-			m++;
-			l=0;
-		}
+		l-=a[i].first-a[i].second;
+		i++;
+		u++;
 	}
-	m+=l>0;
-	cout<<m;
+	if(l>m)
+		cout<<"-1";
+	else
+		cout<<u;
 }
 
 int main()
@@ -191,6 +195,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
+	//cin>>t;
     while(t--)
     {
         solve();
