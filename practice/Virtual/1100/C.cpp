@@ -3,7 +3,7 @@ using namespace std;
 #define ll long long
 #define N 1000005
 #define M 1000000007
-
+#define PI 3.14159265358979323844
 /*
 	*********************************************************************
 	*                             Code By                               *
@@ -163,26 +163,17 @@ bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
 
 void solve()
 {
-	ll n,k,i,j,l,m;
-	cin>>n>>k;
-	vector<ll>a(n);
-	for(i=0;i<n;i++)
-	{
-		cin>>a[i];
-	}
-	l=m=0;
-	for(i=0;i<n;i++)
-	{
-		m+=(a[i]+l)/k;
-		l=(a[i]+l)%k;
-		if(l>a[i])
-		{
-			m++;
-			l=0;
-		}
-	}
-	m+=l>0;
-	cout<<m;
+	ll n,r;
+	long double p,q,t;
+	cin>>n>>r;
+	t=((n-2)*1.0)/n;
+	t*=PI;
+	t/=2;
+	t=cos(t);
+	t=abs(t);
+	p=t/(1-t);
+	p*=r;
+	cout<<fixed<<setprecision(7)<<p;
 }
 
 int main()
