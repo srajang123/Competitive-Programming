@@ -4,6 +4,15 @@ using namespace std;
 #define N 1000005
 #define M 1000000007
 
+/*
+	*********************************************************************
+	*                             Code By                               *
+	*                                                                   *
+	*                            Srajan Gupta                           *
+	*                            srajang_123                            *
+	*                                                                   *
+	*********************************************************************
+*/
 //Prime Numbers
 
 vector<bool>prime(N+1,true);
@@ -87,7 +96,8 @@ ll lcm(ll a,ll b)
 }
 //Graphs
 vector<bool>bvisited(N,false);
-vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
+vector<vector<ll>>G(N);
+vector<ll> bfs(ll s)
 {
 	vector<ll>order;
 	queue<ll>q;
@@ -96,6 +106,7 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	while(!q.empty())
 	{
 		s=q.front();
+		q.pop();
 		order.push_back(s);
 		for(auto x:G[s])
 		{
@@ -109,7 +120,7 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	return order;
 }
 vector<bool>dvisited(N,false);
-vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
+vector<ll> dfs(ll s)
 {
 	vector<ll>order;
 	stack<ll>q;
@@ -133,37 +144,50 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 	}
 	return order;
 }
+//My Functions
 
+void print(pair<ll,ll>a)
+{
+	cout<<a.first<<" "<<a.second;
+}
+void print(vector<ll>a)
+{
+	for(auto x:a)
+		cout<<x<<" ";
+}
+bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
+{
+	return a.second<b.second;
+}
 //Main Solution
 
 void solve()
 {
-	ll i,j,k,n,m;
+	ll n,i,j,k,q;
 	cin>>n;
-	if(n%4)
-	{
-		cout<<"NO\n";
-		return;
-	}
 	vector<ll>a(n);
-	k=2;
-	for(i=0;i<n/2;i++)
+	for(i=0;i<n;i++)cin>>a[i];
+	cin>>q;
+	while(q--)
 	{
-		a[i]=k;
-		k+=2;
+		cin>>i>>j;
+		k=(i+j);
+		ll l=0,r=n-1,m;
+		bool f=false;
+		
+		while(l<=r && !f)
+		{
+			m=(l+r)/2;
+			if(a[m]==k)f=true;
+			else if(a[m]<k)
+				l=m+1;
+			else 
+				r=m-1;
+		}
+		k=lower_bound(a.begin(),a.end(),k)-a.begin();
+		if(f)k=-1;
+		cout<<k<<"\n";
 	}
-	for(i=n/2;i<(3*n)/4;i++)
-	{
-		a[i]=a[i-n/2]-1;
-	}
-	for(i=(3*n)/4;i<n;i++)
-	{
-		a[i]=a[i-n/2]+1;
-	}
-	cout<<"YES\n";
-	for(i=0;i<n;i++)
-		cout<<a[i]<<" ";
-	cout<<"\n";
 }
 
 int main()
@@ -172,7 +196,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    cin>>t;
+	cin>>t;
     while(t--)
     {
         solve();

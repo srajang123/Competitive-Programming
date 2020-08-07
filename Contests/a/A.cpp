@@ -4,6 +4,15 @@ using namespace std;
 #define N 1000005
 #define M 1000000007
 
+/*
+	*********************************************************************
+	*                             Code By                               *
+	*                                                                   *
+	*                            Srajan Gupta                           *
+	*                            srajang_123                            *
+	*                                                                   *
+	*********************************************************************
+*/
 //Prime Numbers
 
 vector<bool>prime(N+1,true);
@@ -87,7 +96,8 @@ ll lcm(ll a,ll b)
 }
 //Graphs
 vector<bool>bvisited(N,false);
-vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
+vector<vector<ll>>G(N);
+vector<ll> bfs(ll s)
 {
 	vector<ll>order;
 	queue<ll>q;
@@ -96,6 +106,7 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	while(!q.empty())
 	{
 		s=q.front();
+		q.pop();
 		order.push_back(s);
 		for(auto x:G[s])
 		{
@@ -109,7 +120,7 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	return order;
 }
 vector<bool>dvisited(N,false);
-vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
+vector<ll> dfs(ll s)
 {
 	vector<ll>order;
 	stack<ll>q;
@@ -133,23 +144,39 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 	}
 	return order;
 }
+//My Functions
 
+void print(pair<ll,ll>a)
+{
+	cout<<a.first<<" "<<a.second;
+}
+void print(vector<ll>a)
+{
+	for(auto x:a)
+		cout<<x<<" ";
+}
+bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
+{
+	return a.second<b.second;
+}
 //Main Solution
 
 void solve()
 {
-	ll i,j,k=2,n;
+	ll n,i,j,k=1;
 	cin>>n;
-	for(i=2;i<=64;i++)
+	vector<ll>a(n);
+	for(i=0;i<n;i++)
+		cin>>a[i];
+	for(i=0;i<n;i++)
 	{
-		j=k*2-1;
-		if(n%j==0)
-		{
-			cout<<(n/j)<<"\n";
-			return;
-		}
-		k*=2;
+		if(a[i]%2==0)
+			k=0;
 	}
+	if(k%2)
+		cout<<"YES\n";
+	else
+		cout<<"NO\n";
 }
 
 int main()
@@ -158,7 +185,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    cin>>t;
+	cin>>t;
     while(t--)
     {
         solve();

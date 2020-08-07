@@ -4,6 +4,15 @@ using namespace std;
 #define N 1000005
 #define M 1000000007
 
+/*
+	*********************************************************************
+	*                             Code By                               *
+	*                                                                   *
+	*                            Srajan Gupta                           *
+	*                            srajang_123                            *
+	*                                                                   *
+	*********************************************************************
+*/
 //Prime Numbers
 
 vector<bool>prime(N+1,true);
@@ -87,7 +96,8 @@ ll lcm(ll a,ll b)
 }
 //Graphs
 vector<bool>bvisited(N,false);
-vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
+vector<vector<ll>>G(N);
+vector<ll> bfs(ll s)
 {
 	vector<ll>order;
 	queue<ll>q;
@@ -96,6 +106,7 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	while(!q.empty())
 	{
 		s=q.front();
+		q.pop();
 		order.push_back(s);
 		for(auto x:G[s])
 		{
@@ -109,7 +120,7 @@ vector<ll> bfs(ll V,vector<vector<ll>>G,ll s)
 	return order;
 }
 vector<bool>dvisited(N,false);
-vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
+vector<ll> dfs(ll s)
 {
 	vector<ll>order;
 	stack<ll>q;
@@ -133,51 +144,54 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 	}
 	return order;
 }
+//My Functions
 
+void print(pair<ll,ll>a)
+{
+	cout<<a.first<<" "<<a.second;
+}
+void print(vector<ll>a)
+{
+	for(auto x:a)
+		cout<<x<<" ";
+}
+bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
+{
+	return a.second<b.second;
+}
 //Main Solution
 
 void solve()
 {
-	ll n,i,j,k,l;
-	cin>>n;
-	vector<ll>a(n);
-	for(i=0;i<n;i++)cin>>a[i];
-	l=0;
-	k=a[0];
-	for(i=0;i<n;i++)
+	string s;
+	ll q,t,i,j;
+	cin>>s>>q;
+	vector<ll>a(s.size(),-1);
+	j=-1;
+	for(i=s.size()-1;i>0;i--)
 	{
-		if(k>0)
+		if(s[i]==')')
 		{
-			j=0;
-			while(i<n && a[i]>0)
+			j=i+1;
+			while(i-- && i>=0)
 			{
-				j=j>a[i]?j:a[i];
-				i++;
+				if(s[i]=='(')
+					a[i]=j;
+				else
+					break;
 			}
-				l+=j;
-			if(i<n)
-			{
-				i--;
-				k=-1;
-			}
+			i++;
 		}
 		else
-		{
-			j=INT64_MIN;
-			while(i<n && a[i]<0)
-			{
-				j=j>a[i]?j:a[i];
-				i++;
-			}
-				l+=j;
-			if(i<n)
-			{
-				i--;
-				k=1;
-			}
-		}
+			a[i]=j;
 	}
-	cout<<l<<"\n";
+	print(a);
+	cout<<"\n";
+	while(q--)
+	{
+		cin>>t;
+		cout<<a[t-1]<<"\n";
+	}
 }
 
 int main()
@@ -186,7 +200,7 @@ int main()
     cin.tie(NULL);
 	cout.tie(NULL);
     ll t=1;
-    cin>>t;
+	cin>>t;
     while(t--)
     {
         solve();
