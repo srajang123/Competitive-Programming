@@ -139,31 +139,106 @@ vector<ll> dfs(ll V,vector<vector<ll>>G,ll s)
 void solve()
 {
 	ll i,j,k,n,m;
-	cin>>n;
-	if(n%4)
-	{
-		cout<<"NO\n";
-		return;
-	}
+	cin>>n>>k;
 	vector<ll>a(n);
-	k=2;
+	for(i=0;i<n;i++)
+		cin>>a[i];
+	unordered_map<ll,ll>b;
+	pair<ll,ll>d={0,0};
 	for(i=0;i<n/2;i++)
 	{
-		a[i]=k;
-		k+=2;
+		b[(a[i]+a[n-i-1])]++;
 	}
-	for(i=n/2;i<(3*n)/4;i++)
+	ll u=INT64_MAX;
+	for(auto x:b)
 	{
-		a[i]=a[i-n/2]-1;
+		u=u>x.first?x.first:u;
+		if(x.second>d.second)
+		{
+			d=x;
+		}
+		else if(x.second==d.second && x.first>d.first)
+			d=x;
 	}
-	for(i=(3*n)/4;i<n;i++)
+	vector<ll>s;
+	for(auto x:b)
 	{
-		a[i]=a[i-n/2]+1;
+		if(x.second==d.second)
+			s.push_back(x.first);
 	}
-	cout<<"YES\n";
-	for(i=0;i<n;i++)
-		cout<<a[i]<<" ";
-	cout<<"\n";
+	ll t=INT64_MAX,z=0;
+	ll f=false;
+	for(i=0;i<s.size();i++)
+	{
+		j=s[i]-u;
+		if(j==0)
+			f=s[i];
+		else
+		{
+			if(s[i]>z)
+			{
+				z=s[i];
+				t=j;
+			}
+		}
+	}
+	if(t==INT64_MAX && f)
+	{
+		z=f;
+	}
+	ll c=0,p;
+	for(i=0;i<n/2;i++)
+	{
+		j=n-i-1;
+		p=a[i]+a[j];
+		if(p<z)
+		{
+			if(z-a[j]<=k)
+			{
+				a[i]=z-a[j];
+				c++;
+			}
+			else if(z-a[i]<=k)
+			{
+				a[j]=z-a[i];
+				c++;
+			}
+			else
+			{
+				a[i]=k;
+				a[j]=z-a[i];
+				c+=2;
+			}
+		}
+		else if(p>z)
+		{
+			if(z-a[j]<=k && z-a[j]>0)
+			{
+				a[i]=z-a[j];
+				c++;
+			}
+			else if(z-a[i]<=k && z-a[i]>0)
+			{
+				a[j]=z-a[i];
+				c++;
+			}
+			else
+			{
+				if(z>k)
+				{
+				a[i]=k;
+				a[j]=z-a[i];
+				}
+				else
+				{
+					a[i]=z-1;
+					a[j]=1;
+				}
+				c+=2;
+			}
+		}
+	}
+	cout<<c<<"\n";
 }
 
 int main()
