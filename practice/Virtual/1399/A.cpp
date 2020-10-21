@@ -163,7 +163,21 @@ bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
 
 void solve()
 {
-	
+	ll n,i,j,k,l=0;
+	cin>>n;
+	vector<ll>a(n);
+	for(i=0;i<n;i++)
+		cin>>a[i];
+	sort(a.begin(),a.end());
+	for(i=0;i<n-1;i++)
+	{
+		if(a[i]==a[i+1]||a[i]+1==a[i+1])
+			l++;
+	}
+	if(l==n-1)
+		cout<<"YES\n";
+	else
+		cout<<"NO\n";
 }
 
 int main()

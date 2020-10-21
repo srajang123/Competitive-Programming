@@ -96,7 +96,7 @@ ll lcm(ll a,ll b)
 }
 //Graphs
 vector<bool>bvisited(N,false);
-vector<vector<ll>>G(N);
+vector<vector<pair<ll,ll>>>G(N);/*
 vector<ll> bfs(ll s)
 {
 	vector<ll>order;
@@ -118,31 +118,33 @@ vector<ll> bfs(ll s)
 		}
 	}
 	return order;
-}
+}*/
 vector<bool>dvisited(N,false);
-vector<ll> dfs(ll s)
+vector<ll>cn(N,0);
+ll dfs(ll s,ll p=-1)//,map<pair<ll,ll>,ll>&a,vector<pair<ll,ll>>&b)
 {
-	vector<ll>order;
-	stack<ll>q;
-	q.push(s);
-	while(!q.empty())
+	if(G[s].size()==1 && p!=-1)
 	{
-		ll v=q.top();
-		q.pop();
-		if(!dvisited[v])
-		{
-			order.push_back(v);
-			dvisited[v]=true;
-		}
-		for(ll i=0;i<G[v].size();i++)
-		{
-			if(!dvisited[G[v][i]])
-			{
-				q.push(G[v][i]);
-			}
-		}
+		return cn[s]=1;
 	}
-	return order;
+	ll c=0;
+	for(auto x:G[s])
+	{
+	    if(x.first==p)continue;
+		c+=dfs(x.first,s);
+	}
+	return cn[s]=c;
+}
+vector<pair<ll,ll>>dp;
+ll dfs2(ll s,ll p=-1)//,map<pair<ll,ll>,ll>&a,vector<pair<ll,ll>>&b)
+{
+	for(auto x:G[s])
+	{
+	    if(x.first==p)continue;
+		dp.push_back({cn[x.first],x.second});
+		dfs2(x.first,s);
+	}
+	return 0;
 }
 //My Functions
 
@@ -160,9 +162,54 @@ bool sortbysec(const pair<ll,ll>&a,const pair<ll,ll>&b)
 	return a.second<b.second;
 }
 //Main Solution
-
+bool mysort(pair<ll,ll>a,pair<ll,ll>b)
+{
+	if(a.first*a.second>=b.first*b.second)
+		return true;
+	return false;
+}
 void solve()
 {
+	ll i,j,k,l,n,s;
+	cin>>n>>s;
+	for(i=0;i<=n;i++)
+	{
+		G[i].clear();
+		cn[i]=0;
+	}
+	dp.clear();
+	for(i=1;i<n;i++)
+	{
+		cin>>j>>k>>l;
+		G[k].push_back({j,l});
+		G[j].push_back({k,l});
+	}
+	dfs(1);
+	/*for(i=0;i<=n;i++)
+	    cout<<cn[i]<<" ";
+	    cout<<"\n";*/
+	dfs2(1);
+	sort(dp.begin(),dp.end(),mysort);
+	ll c=0;
+	for(i=0;i<dp.size();i++)
+	{
+	    //print(dp[i]);
+	    //cout<<"\n";
+		c+=dp[i].first*dp[i].second;
+	}
+	l=0;
+	//cout<<c<<"-";
+	for(i=0;i<dp.size() && c>s;i++)
+	{
+		while(c>s && dp[i].second>0)
+		{
+			j=dp[i].second/2;
+			c-=dp[i].first*j;
+			dp[i].second=j;
+			l++;
+		}
+	}
+	cout<<l<<"\n";
 }
 
 int main()
